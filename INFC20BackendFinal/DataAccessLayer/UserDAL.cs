@@ -1,4 +1,5 @@
-﻿using INFC20BackendFinal.Utilities;
+﻿using INFC20BackendFinal.Models;
+using INFC20BackendFinal.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

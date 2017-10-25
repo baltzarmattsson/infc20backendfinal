@@ -12,7 +12,7 @@ namespace INFC20BackendFinal.DataAccessLayer
                                        password = "super",
                                        database = "infc20",
                                        //server = "DESKTOP-MNFMFBJ\\SQLEXPRESS", //DESKTOP-MNFMFBJ\SQLEXPRESS
-                                       server = "DESKTOP - 18HO2QU\\SQLEXPRESS", // Baltzar laptop
+                                       server = "DESKTOP-18HO2QU\\SQLEXPRESS", // Baltzar laptop
                                        url = "user id = " + username + ";" +
                                              "password = " + password + ";" +
                                              "server = " + server + ";" +
@@ -30,12 +30,14 @@ namespace INFC20BackendFinal.DataAccessLayer
             }
             catch (SqlException se)
             {
-                Console.WriteLine(se.Message);
+                //Console.WriteLine(se.Message);
+                throw se;
                 Environment.Exit(0);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                //Console.WriteLine(e.Message);
+                throw e;
                 Environment.Exit(0);
             }
             return null;
