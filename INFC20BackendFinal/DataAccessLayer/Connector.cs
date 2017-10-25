@@ -12,7 +12,8 @@ namespace INFC20BackendFinal.DataAccessLayer
                                        password = "super",
                                        database = "infc20",
                                        //server = "DESKTOP-MNFMFBJ\\SQLEXPRESS", //DESKTOP-MNFMFBJ\SQLEXPRESS
-                                       server = "DESKTOP-18HO2QU\\SQLEXPRESS", // Baltzar laptop
+                                       //server = "DESKTOP-18HO2QU\\SQLEXPRESS", // Baltzar laptop
+                                       server = "DESKTOP-VFTNTHL", // Baltzar desktop
                                        url = "user id = " + username + ";" +
                                              "password = " + password + ";" +
                                              "server = " + server + ";" +

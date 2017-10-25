@@ -1,8 +1,10 @@
-﻿using System;
+﻿using INFC20BackendFinal.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace INFC20BackendFinal.Controllers
@@ -22,8 +24,12 @@ namespace INFC20BackendFinal.Controllers
         }
 
         // POST api/values
-        public void Post([FromBody]string value)
+        [HttpOptions]
+        [HttpPost]
+        [Route("api/Values")]
+        public async Task<IHttpActionResult> Post([FromBody]Bid value)
         {
+            return Ok("ok");
         }
 
         // PUT api/values/5

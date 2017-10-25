@@ -22,21 +22,21 @@ namespace INFC20BackendFinal.Controllers
         
 
         // POST: api/Bid
+        [HttpOptions]
         [HttpPost]
-        [Route("api/Bid/Post/{temp}")]
-        public async Task<IHttpActionResult> Post(string temp)
+        public async Task<IHttpActionResult> Post([FromBody]Bid bid)
         {
-            return Ok();
+            //return Ok("temp? " + temp);
 
-            //if (bid != null)
-            //{
-            //    BidDAL.AddBid(bid);
-            //    return Ok();
-            //}
-            //else
-            //{
-            //    return BadRequest();
-            //}
+             if (bid != null)
+            {
+                //BidDAL.AddBid(bid);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
 
 
         }
