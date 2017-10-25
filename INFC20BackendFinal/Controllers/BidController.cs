@@ -15,35 +15,25 @@ namespace INFC20BackendFinal.Controllers
         // GET: api/Bid
         [HttpGet]
         [Route("api/Bid/GetBidsForListing/{listingId}")]
-        public async Task<IHttpActionResult> GetBidsForListing(int listingId)
+        public IHttpActionResult GetBidsForListing(int listingId)
         {
             return Ok(BidDAL.GetBidsForListing(listingId));
         }
         
 
         // POST: api/Bid
-        [HttpOptions]
         [HttpPost]
-        public async Task<IHttpActionResult> Post([FromBody]Bid bid)
+        public IHttpActionResult Post([FromBody]Bid bid)
         {
-            //return Ok("temp? " + temp);
-
-             if (bid != null)
+            if (bid != null)
             {
                 BidDAL.AddBid(bid);
-                return Ok();
+                return Ok(bid);
             }
             else
             {
                 return BadRequest();
             }
-
-
-        }
-
-        // PUT: api/Bid/5
-        public void Put(int id, [FromBody]string value)
-        {
         }
 
         // DELETE: api/Bid/5

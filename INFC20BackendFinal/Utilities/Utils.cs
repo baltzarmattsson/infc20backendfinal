@@ -55,16 +55,27 @@ namespace INFC20BackendFinal.Utilities
             return tuples;
         }
 
-        public static void InsertEntity(object entity, string procedure, string[] exceptionParams)
+        public static object InsertEntity(object entity, string procedure, string[] exceptionParams)
         {
             if (entity != null && procedure != null)
             {
                 Dictionary<string, object> parameters = Utils.GetParams(entity, exceptionParams);
-                Utils.Insert(procedure, parameters);
+                object newId = Utils.Insert(procedure, parameters, true);
+                return newId;
+            }
+            return null;
+        }
+
+        public static void UpdateEntity(object entity, string procedure, string[] exceptionParams)
+        {
+            if (entity != null && procedure != null)
+            {
+                Dictionary<string, object> parameters = Utils.GetParams(entity, exceptionParams);
+                Utils.Insert(procedure, parameters, false);
             }
         }
 
-        public static void Insert(string procedure, Dictionary<string, object> parameters)
+        public static object Insert(string procedure, Dictionary<string, object> parameters, bool returnNewId = false)
         {
             if (procedure != null && parameters != null)
             {
@@ -76,10 +87,27 @@ namespace INFC20BackendFinal.Utilities
                         foreach (var entry in parameters)
                             cmd.Parameters.AddWithValue(entry.Key, entry.Value);
 
-                        cmd.ExecuteNonQuery();
+
+                        if (returnNewId)
+                        {
+
+                            SqlParameter newId = new SqlParameter("@NewIdentity", SqlDbType.Int);
+                            newId.Direction = ParameterDirection.Output;
+                            cmd.Parameters.Add(newId);
+                            cmd.ExecuteNonQuery();
+                            return newId.Value.ToString();
+
+                        }
+                        else
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+
                     }
                 }
             }
+
+            return null;
         }
 
         private static bool IsPropAllowedOnType(PropertyInfo prop, string[] exceptions)

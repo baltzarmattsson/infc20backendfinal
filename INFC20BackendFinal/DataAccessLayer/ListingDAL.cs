@@ -24,18 +24,22 @@ namespace INFC20BackendFinal.DataAccessLayer
             return Utils.Get(type, procedure, parameters, new string[] { "Bids" }).FirstOrDefault() as Listing;
         }
 
-        public static void AddListing(Listing listing) // what if listing is null? 
+        public static int AddListing(Listing listing) // what if listing is null? 
         {
+
             procedure = ListProcedure.ADD_LISTING.ToString();
-            Utils.InsertEntity(listing, procedure, exceptionParams);
+
+            object newId = Utils.InsertEntity(listing, procedure, new string[] { "Id", "Bids", "Published" });
+            return Convert.ToInt32(newId.ToString());
         }
 
         public static void UpdateListing(Listing listing)
         {
             procedure = ListProcedure.UPDATE_LISTING.ToString();
-            Utils.InsertEntity(listing, procedure, exceptionParams);
+            Utils.UpdateEntity(listing, procedure, new string[] { "Title", "UserEmail", "Amount", "Bids", "Published" });
         }
 
+        // Remove eller insert? InsertEntity används
         public static void RemoveListing(Listing listing)
         {
             procedure = ListProcedure.REMOVE_LISTING.ToString();

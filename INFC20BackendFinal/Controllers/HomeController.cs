@@ -15,12 +15,5 @@ namespace INFC20BackendFinal.Controllers
 
             return View();
         }
-
-        [HttpPost]
-        [Route("api/Home/test")]
-        public async Task<string> Post()
-        {
-            return "ok?";
-        }
     }
 }

@@ -188,7 +188,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListingController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataAccessLayer\BidDAL.cs" />
     <Compile Include="DataAccessLayer\Connector.cs" />
     <Compile Include="DataAccessLayer\ListingDAL.cs" />

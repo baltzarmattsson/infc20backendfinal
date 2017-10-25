@@ -2,10 +2,12 @@
 using INFC20BackendFinal.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace INFC20BackendFinal.Controllers
@@ -14,7 +16,7 @@ namespace INFC20BackendFinal.Controllers
     {
 
         [HttpGet]
-        public async Task<IHttpActionResult> GetListings()
+        public IHttpActionResult GetListings()
         {
             var allListings = ListingDAL.GetAllListings();
             return Ok(allListings);
@@ -22,7 +24,7 @@ namespace INFC20BackendFinal.Controllers
 
         // GET: api/Listing/5
         [HttpGet]
-        public async Task<IHttpActionResult> Get(int id)
+        public IHttpActionResult Get(int id)
         {
             var listing = ListingDAL.GetListing(id);
 
@@ -34,14 +36,53 @@ namespace INFC20BackendFinal.Controllers
 
         // POST: api/Listing
         [HttpPost]
-        public async Task<IHttpActionResult> Post([FromBody]Listing listing)
+        public IHttpActionResult Post([FromBody]Listing listing)
         {
             if (listing != null)
             {
-                ListingDAL.AddListing(listing);
+                int newId = ListingDAL.AddListing(listing);
+                listing.Id = newId;
+                return Ok(listing);
+            } 
+            else
+            {
+                return BadRequest();
             }
 
-            return Ok();
+        }
+
+        [HttpPost]
+        [Route("api/Listing/UploadImageForListingId/{listingId}")]
+        public IHttpActionResult UploadImageForListingId(int listingId)
+        {
+
+            Listing listing = ListingDAL.GetListing(listingId);
+
+            if (listing == null)
+            {
+                return NotFound();
+            }
+
+            var httpRequest = HttpContext.Current.Request;
+
+            if (httpRequest.Files.Count == 0)
+            {
+                return BadRequest();
+            }
+
+            var postedImage = httpRequest.Files[0];
+
+            string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\infc20images\\";
+
+            Directory.CreateDirectory(saveDir);
+            var localFilePath = saveDir + postedImage.FileName;
+            postedImage.SaveAs(localFilePath);
+
+            listing.ImgUrl = localFilePath;
+
+            ListingDAL.UpdateListing(listing);
+
+            return Ok(listing);
         }
 
         // PUT: api/Listing/5

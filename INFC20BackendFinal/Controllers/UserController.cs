@@ -20,7 +20,7 @@ namespace INFC20BackendFinal.Controllers
         // GET: api/User/5
         [HttpPost]
         [Route("api/User/GetUserByEmail")]
-        public async Task<IHttpActionResult> GetUserByEmail([FromBody]string email)
+        public IHttpActionResult GetUserByEmail([FromBody]string email)
         {
             return Ok(UserDAL.GetUser(email));
         }
