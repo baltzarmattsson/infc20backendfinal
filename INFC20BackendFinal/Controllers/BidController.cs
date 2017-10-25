@@ -30,7 +30,7 @@ namespace INFC20BackendFinal.Controllers
 
              if (bid != null)
             {
-                //BidDAL.AddBid(bid);
+                BidDAL.AddBid(bid);
                 return Ok();
             }
             else
