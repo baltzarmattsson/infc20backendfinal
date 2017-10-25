@@ -1,16 +1,18 @@
 ﻿using INFC20BackendFinal.DataAccessLayer;
+using INFC20BackendFinal.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 
 namespace INFC20BackendFinal.Utilities
 {
     public static class Utils
     {
-        public static List<object> Get(Type targetType, string procedure, Dictionary<string, object> parameters)
+        public static List<object> Get(Type targetType, string procedure, Dictionary<string, object> parameters, string[] exceptionNames)
         {
             List<object> tuples = new List<object>();
             if (targetType != null && procedure != null)
@@ -30,13 +32,13 @@ namespace INFC20BackendFinal.Utilities
                             while (dataReader.Read() && dataReader.HasRows)
                             {
                                 var target = Activator.CreateInstance(targetType);
-                                foreach (var prop in target.GetType().GetProperties())
+                                foreach (var prop in target.GetType().GetProperties()) // <--- ERROR
                                 {
-                                    if (prop != null && prop.CanWrite)
+                                    if (prop != null && prop.CanWrite && IsPropAllowedOnType(prop, exceptionNames))
                                     {
                                         try
                                         {
-                                            prop.SetValue(target, dataReader[prop.Name], null);
+                                            prop.SetValue(target, dataReader[prop.Name], null); // <--- ERROR
                                         }
                                         catch (IndexOutOfRangeException e)
                                         {
@@ -77,6 +79,18 @@ namespace INFC20BackendFinal.Utilities
                         cmd.ExecuteNonQuery();
                     }
                 }
+            }
+        }
+
+        private static bool IsPropAllowedOnType(PropertyInfo prop, string[] exceptions)
+        {
+            if (exceptions != null && exceptions.Contains(prop.Name))
+            {
+                return false;
+            }
+            else
+            {
+                return true; 
             }
         }
 

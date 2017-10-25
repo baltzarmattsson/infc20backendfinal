@@ -20,7 +20,7 @@ namespace INFC20BackendFinal.DataAccessLayer
             parameters = new Dictionary<string, object>();
             parameters.Add("TagId", tagId);
 
-            return Utils.Get(type, procedure, parameters).FirstOrDefault() as Tag;
+            return Utils.Get(type, procedure, parameters, exceptionParams).FirstOrDefault() as Tag;
         }
 
         public static List<object> GetListingsTags(int listingId)
@@ -29,7 +29,7 @@ namespace INFC20BackendFinal.DataAccessLayer
             parameters = new Dictionary<string, object>();
             parameters.Add("ListingId", listingId);
 
-            return Utils.Get(type, procedure, parameters);
+            return Utils.Get(type, procedure, parameters, exceptionParams);
         }
 
         public static void AddTag(Tag tag)
@@ -104,7 +104,7 @@ namespace INFC20BackendFinal.DataAccessLayer
         public static List<object> GetAllTags()
         {
             procedure = TagProcedure.GET_ALL_TAGS.ToString();
-            return Utils.Get(type, procedure, parameters);
+            return Utils.Get(type, procedure, parameters, exceptionParams);
         }
 
 

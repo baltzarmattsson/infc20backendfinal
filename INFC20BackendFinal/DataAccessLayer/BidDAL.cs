@@ -12,7 +12,7 @@ namespace INFC20BackendFinal.DataAccessLayer
         private static readonly Type type = new Bid().GetType();
         private static Dictionary<string, object> parameters;
         private static string procedure;
-        private static string[] exceptionParams = new string[] { "TimeStamp" };
+        private readonly static string[] exceptionParams = new string[] { "TimeStamp" };
 
         public static void AddBid(Bid bid)
         {
@@ -33,7 +33,7 @@ namespace INFC20BackendFinal.DataAccessLayer
             parameters = new Dictionary<string, object>();
             parameters.Add("ListingId", listingId);
 
-            return Utils.Get(type, procedure, parameters);
+            return Utils.Get(type, procedure, parameters, exceptionParams);
         }
     }
 }

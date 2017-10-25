@@ -16,6 +16,8 @@ namespace INFC20BackendFinal.Models
         public string Description { get; set; }
         public string UserEmail { get; set; }
 
+        public List<Bid> Bids { get; set; }
+
         public Listing() { }
 
         public Listing(DateTime endTime, string title, string imgUrl, string description, string userEmail)

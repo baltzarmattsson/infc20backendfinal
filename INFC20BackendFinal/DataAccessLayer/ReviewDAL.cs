@@ -12,7 +12,7 @@ namespace INFC20BackendFinal.DataAccessLayer
         private static readonly Type type = new Review().GetType();
         private static Dictionary<string, object> parameters;
         private static string procedure;
-        private static string[] exceptionParams = new string[] { "Id" };
+        private readonly static string[] exceptionParams = new string[] { "Id" };
 
 
         public static void AddReview(Review review)
@@ -33,7 +33,7 @@ namespace INFC20BackendFinal.DataAccessLayer
             parameters = new Dictionary<string, object>();
             parameters.Add("Id", reviewId);
 
-            return Utils.Get(type, procedure, parameters).FirstOrDefault() as Review;
+            return Utils.Get(type, procedure, parameters, exceptionParams).FirstOrDefault() as Review;
         }
 
         public static List<object> GetReviewsForUser(User user)
@@ -44,7 +44,7 @@ namespace INFC20BackendFinal.DataAccessLayer
             if (user != null)
                 parameters.Add("ReviewedUserEmail", user.Email);
 
-            return Utils.Get(type, procedure, parameters);
+            return Utils.Get(type, procedure, parameters, exceptionParams);
         }
     }
 }

@@ -12,15 +12,16 @@ namespace INFC20BackendFinal.DataAccessLayer
         private static readonly Type type = new Listing().GetType();
         private static Dictionary<string, object> parameters;
         private static string procedure;
-        private static string[] exceptionParams = new string[] { "Id", "Published" };
+        private readonly static string[] exceptionParams = new string[] { "Id", "Published" };
 
         public static Listing GetListing(int id)
         {
+            //exceptionParams = new string[] { "Bids" };
             procedure = ListProcedure.GET_LISTING.ToString();
             parameters = new Dictionary<string, object>();
             parameters.Add("Id", id);
 
-            return Utils.Get(type, procedure, parameters).FirstOrDefault() as Listing;
+            return Utils.Get(type, procedure, parameters, new string[] { "Bids" }).FirstOrDefault() as Listing;
         }
 
         public static void AddListing(Listing listing) // what if listing is null? 
@@ -53,7 +54,7 @@ namespace INFC20BackendFinal.DataAccessLayer
         public static List<object> GetAllListings()
         {
             procedure = ListProcedure.GET_ALL_LISTINGS_DESC.ToString();
-            return Utils.Get(type, procedure, parameters);
+            return Utils.Get(type, procedure, null, new string[] { "Bids" });
         }
     }
 }

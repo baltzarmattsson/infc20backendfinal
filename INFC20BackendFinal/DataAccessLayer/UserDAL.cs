@@ -20,7 +20,7 @@ namespace INFC20BackendFinal.DataAccessLayer
             parameters = new Dictionary<string, object>();
             parameters.Add("Email", email);
 
-            return Utils.Get(type, procedure, parameters).FirstOrDefault() as User;
+            return Utils.Get(type, procedure, parameters, exceptionParams).FirstOrDefault() as User;
         }
 
         public static void AddUser(User user)
