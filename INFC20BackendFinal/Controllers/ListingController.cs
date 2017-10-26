@@ -2,6 +2,7 @@
 using INFC20BackendFinal.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,107 +17,159 @@ namespace INFC20BackendFinal.Controllers
     {
 
         [HttpGet]
-        public IHttpActionResult GetListings()
+        public HttpResponseMessage GetListings()
         {
-            var allListings = ListingDAL.GetAllListings();
-            return Ok(allListings);
+            try
+            {
+                var allListings = ListingDAL.GetAllListings();
+                return Request.CreateResponse(HttpStatusCode.OK, allListings);
+            }
+            catch (SqlException sqle)
+            {
+
+                string message = ExceptionHandler.HandleSqlException(sqle);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+            }
         }
 
         // GET: api/Listing/5
         [HttpGet]
-        public IHttpActionResult Get(int id)
+        public HttpResponseMessage Get(int id)
         {
-            var listing = ListingDAL.GetListing(id);
 
-            var bidsForListing = BidDAL.GetBidsForListing(id).Cast<Bid>();
-            listing.Bids = bidsForListing.ToList();
-            return Ok(listing);
+            try
+            {
+                var listing = ListingDAL.GetListing(id);
+                var bidsForListing = BidDAL.GetBidsForListing(id).Cast<Bid>();
+                listing.Bids = bidsForListing.ToList();
+                return Request.CreateResponse(HttpStatusCode.OK, listing);
+            }
+            catch (SqlException sqle)
+            {
+                string message = ExceptionHandler.HandleSqlException(sqle);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+            }
         }
 
         // GET: api/Listing/GetListingsByEmail
         [HttpPost]
         [Route("api/Listing/GetListingsByEmail")]
-        public IHttpActionResult GetListingsByEmail([FromBody]string email)
+        public HttpResponseMessage GetListingsByEmail([FromBody]string email)
         {
             if (email != null)
             {
                 // TODO - write stored proc
-                var allListings = ListingDAL.GetAllListings().Cast<Listing>();
-                var filtered = allListings.Where(listing => listing.UserEmail == email).ToList();
-                return Ok(filtered);
-            } 
+                try
+                {
+                    var allListings = ListingDAL.GetAllListings().Cast<Listing>();
+                    var filtered = allListings.Where(listing => listing.UserEmail == email).ToList();
+                    return Request.CreateResponse(HttpStatusCode.OK, filtered);
+                }
+                catch (SqlException sqle)
+                {
+                    string message = ExceptionHandler.HandleSqlException(sqle);
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+                }
+            }
             else
             {
-                return BadRequest();
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
             }
         }
 
-            //ListingDAL.
+        //ListingDAL.
 
         // POST: api/Listing
         [HttpPost]
-        public IHttpActionResult Post([FromBody]Listing listing)
+        public HttpResponseMessage Post([FromBody]Listing listing)
         {
             if (listing != null)
             {
-                int newId = ListingDAL.AddListing(listing);
-                listing.Id = newId;
-                return Ok(listing);
-            } 
+                try
+                {
+                    int newId = ListingDAL.AddListing(listing);
+                    listing.Id = newId;
+                    return Request.CreateResponse(HttpStatusCode.OK, listing);
+                }
+                catch (SqlException sqle)
+                {
+
+                    string message = ExceptionHandler.HandleSqlException(sqle);
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+                }
+            }
             else
             {
-                return BadRequest();
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
             }
 
         }
 
         [HttpPost]
         [Route("api/Listing/UploadImageForListingId/{listingId}")]
-        public IHttpActionResult UploadImageForListingId(int listingId)
+        public HttpResponseMessage UploadImageForListingId(int listingId)
         {
 
-            Listing listing = ListingDAL.GetListing(listingId);
-
-            if (listing == null)
+            try
             {
-                return NotFound();
+                Listing listing = ListingDAL.GetListing(listingId);
+
+                if (listing == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "");
+                }
+
+                var httpRequest = HttpContext.Current.Request;
+
+                if (httpRequest.Files.Count == 0)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
+                }
+
+                var postedImage = httpRequest.Files[0];
+
+                string referencablePathByFrontEnd = "assets\\mock-data\\listing-images\\" + listingId + "\\";
+                string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Systemvetare\\INFC20Project\\buysellapp\\src\\" + referencablePathByFrontEnd;
+                // LAPTOP - string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Systemvetare\\INFC20Frontend\\src\\" + referencablePathByFrontEnd;
+
+                Directory.CreateDirectory(saveDir);
+                var localFilePath = saveDir + postedImage.FileName;
+                postedImage.SaveAs(localFilePath);
+
+                listing.ImgUrl = referencablePathByFrontEnd + postedImage.FileName;
+
+                ListingDAL.UpdateListing(listing);
+
+                return Request.CreateResponse(HttpStatusCode.OK, listing);
             }
-
-            var httpRequest = HttpContext.Current.Request;
-
-            if (httpRequest.Files.Count == 0)
+            catch (SqlException sqle)
             {
-                return BadRequest();
+
+                string message = ExceptionHandler.HandleSqlException(sqle);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }
-
-            var postedImage = httpRequest.Files[0];
-
-            string referencablePathByFrontEnd = "assets\\mock-data\\listing-images\\" + listingId + "\\";
-            // DESKTOP - string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Systemvetare\\INFC20Project\\buysellapp\\src\\" + referencablePathByFrontEnd;
-            string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Systemvetare\\INFC20Frontend\\src\\" + referencablePathByFrontEnd;
-
-            Directory.CreateDirectory(saveDir);
-            var localFilePath = saveDir + postedImage.FileName;
-            postedImage.SaveAs(localFilePath);
-
-            listing.ImgUrl = referencablePathByFrontEnd + postedImage.FileName;
-
-            ListingDAL.UpdateListing(listing);
-
-            return Ok(listing);
         }
 
         // PUT: api/Listing/5
-        public IHttpActionResult Put([FromBody]Listing listing)
+        public HttpResponseMessage Put([FromBody]Listing listing)
         {
             if (listing != null)
             {
-                ListingDAL.UpdateListing(listing);
-                return Ok(listing);
+                try
+                {
+                    ListingDAL.UpdateListing(listing);
+                    return Request.CreateResponse(HttpStatusCode.OK, listing);
+                }
+                catch (SqlException sqle)
+                {
+
+                    string message = ExceptionHandler.HandleSqlException(sqle);
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+                }
             }
             else
             {
-                return NotFound();
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "");
             }
         }
 

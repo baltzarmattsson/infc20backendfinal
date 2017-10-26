@@ -16,32 +16,42 @@ namespace INFC20BackendFinal.Controllers
         // GET: api/Bid
         [HttpGet]
         [Route("api/Bid/GetBidsForListing/{listingId}")]
-        public IHttpActionResult GetBidsForListing(int listingId)
+        public HttpResponseMessage GetBidsForListing(int listingId)
         {
-            return Ok(BidDAL.GetBidsForListing(listingId));
-        }
+            try
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, BidDAL.GetBidsForListing(listingId));
+            }
+            catch (SqlException sqle)
+            {
+
+                string message = ExceptionHandler.HandleSqlException(sqle);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+            }
+       }
         
 
         // POST: api/Bid
         [HttpPost]
-        public HttpRequestMessage Post([FromBody]Bid bid)
+        public HttpResponseMessage Post([FromBody]Bid bid)
         {
             if (bid != null)
             {
                 try
                 {
                     BidDAL.AddBid(bid);
+                    return Request.CreateResponse(HttpStatusCode.OK, bid);
                 }
                 catch (SqlException sqle)
                 {
 
-                    return InternalServerError(ExceptionHandler.HandleSqlException(sqle));
+                    string message = ExceptionHandler.HandleSqlException(sqle);
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
                 }
-                return Ok(bid);
             }
             else
             {
-                return BadRequest();
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
             }
         }
 

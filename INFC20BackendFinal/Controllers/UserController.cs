@@ -2,6 +2,7 @@
 using INFC20BackendFinal.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,23 +17,39 @@ namespace INFC20BackendFinal.Controllers
         // GET: api/User/5
         [HttpPost]
         [Route("api/User/GetUserByEmail")]
-        public IHttpActionResult GetUserByEmail([FromBody]string email)
+        public HttpResponseMessage GetUserByEmail([FromBody]string email)
         {
-            return Ok(UserDAL.GetUser(email));
+            try
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, UserDAL.GetUser(email));
+            }
+            catch (SqlException sqle)
+            {
+                string message = ExceptionHandler.HandleSqlException(sqle);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+            }
         }
 
         // POST: api/User
         [HttpPost]
-        public IHttpActionResult Post([FromBody]User user) 
+        public HttpResponseMessage Post([FromBody]User user)
         {
             if (user != null)
             {
-                UserDAL.AddUser(user);
-                return Ok(user);
-            }   
+                try
+                {
+                    UserDAL.AddUser(user);
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                catch (SqlException sqle)
+                {
+                    string message = ExceptionHandler.HandleSqlException(sqle);
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+                }
+            }
             else
             {
-                return BadRequest();
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
             }
 
         }
@@ -43,12 +60,19 @@ namespace INFC20BackendFinal.Controllers
         {
             if (userEmail != null)
             {
-                User user = UserDAL.GetUser(userEmail);
-                if (user != null)
+                try
                 {
-                    return user.Password == password;
+                    User user = UserDAL.GetUser(userEmail);
+                    if (user != null)
+                    {
+                        return user.Password == password;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (SqlException)
                 {
                     return false;
                 }
@@ -60,8 +84,27 @@ namespace INFC20BackendFinal.Controllers
         }
 
         // PUT: api/User/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public HttpResponseMessage Put([FromBody]User user)
         {
+            if (user != null)
+            {
+                try
+                {
+                    UserDAL.UpdateUser(user);
+                    return Request.CreateResponse(HttpStatusCode.OK, user);
+                }
+                catch (SqlException sqle)
+                {
+                    string message = ExceptionHandler.HandleSqlException(sqle);
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+                }
+            }
+            else
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
+            }
+
         }
 
         // DELETE: api/User/5

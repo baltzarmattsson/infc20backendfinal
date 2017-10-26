@@ -32,7 +32,7 @@ namespace INFC20BackendFinal.DataAccessLayer
         public static void UpdateUser(User user)
         {
             procedure = UserProcedure.USP_UPDATE_USER.ToString();
-            Utils.InsertEntity(user, procedure, exceptionParams);
+            Utils.InsertEntity(user, procedure, exceptionParams, false);
         }
 
         public static void RemoveUser(User user)
