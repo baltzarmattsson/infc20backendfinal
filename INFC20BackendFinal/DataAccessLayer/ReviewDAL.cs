@@ -17,7 +17,7 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static void AddReview(Review review)
         {
-            procedure = ReviewProcedure.ADD_REVIEW.ToString();
+            procedure = ReviewProcedure.USP_ADD_REVIEW.ToString();
             Utils.InsertEntity(review, procedure, exceptionParams);
         }
 
@@ -29,7 +29,7 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static Review GetReview(int reviewId)
         {
-            procedure = ReviewProcedure.GET_REVIEW.ToString();
+            procedure = ReviewProcedure.USP_GET_REVIEW.ToString();
             parameters = new Dictionary<string, object>();
             parameters.Add("Id", reviewId);
 
@@ -38,7 +38,7 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static List<object> GetReviewsForUser(User user)
         {
-            procedure = ReviewProcedure.GET_REVIEWS_FOR_USER.ToString();
+            procedure = ReviewProcedure.USP_GET_REVIEWS_FOR_USER.ToString();
             parameters = new Dictionary<string, object>();
 
             if (user != null)

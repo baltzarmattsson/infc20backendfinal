@@ -16,7 +16,7 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static User GetUser(string email)
         {
-            procedure = UserProcedure.GET_USER.ToString();
+            procedure = UserProcedure.USP_GET_USER.ToString();
             parameters = new Dictionary<string, object>();
             parameters.Add("Email", email);
 
@@ -25,25 +25,25 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static void AddUser(User user)
         {
-            procedure = UserProcedure.ADD_USER.ToString();
+            procedure = UserProcedure.USP_ADD_USER.ToString();
             Utils.InsertEntity(user, procedure, exceptionParams, false);
         }
 
         public static void UpdateUser(User user)
         {
-            procedure = UserProcedure.UPDATE_USER.ToString();
+            procedure = UserProcedure.USP_UPDATE_USER.ToString();
             Utils.InsertEntity(user, procedure, exceptionParams);
         }
 
         public static void RemoveUser(User user)
         {
-            procedure = UserProcedure.REMOVE_USER.ToString();
+            procedure = UserProcedure.USP_REMOVE_USER.ToString();
             Utils.InsertEntity(user, procedure, exceptionParams);
         }
 
         public static void RemoveUser(string email)
         {
-            procedure = UserProcedure.REMOVE_USER.ToString();
+            procedure = UserProcedure.USP_REMOVE_USER.ToString();
             parameters = new Dictionary<string, object>();
             parameters.Add("Email", email);
 

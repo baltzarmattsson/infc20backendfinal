@@ -17,7 +17,7 @@ namespace INFC20BackendFinal.DataAccessLayer
         public static Listing GetListing(int id)
         {
             //exceptionParams = new string[] { "Bids" };
-            procedure = ListProcedure.GET_LISTING.ToString();
+            procedure = ListProcedure.USP_GET_LISTING.ToString();
             parameters = new Dictionary<string, object>();
             parameters.Add("Id", id);
 
@@ -27,7 +27,7 @@ namespace INFC20BackendFinal.DataAccessLayer
         public static int AddListing(Listing listing) // what if listing is null? 
         {
 
-            procedure = ListProcedure.ADD_LISTING.ToString();
+            procedure = ListProcedure.USP_ADD_LISTING.ToString();
 
             object newId = Utils.InsertEntity(listing, procedure, new string[] { "Id", "Bids", "Published" });
             return Convert.ToInt32(newId.ToString());
@@ -35,20 +35,20 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static void UpdateListing(Listing listing)
         {
-            procedure = ListProcedure.UPDATE_LISTING.ToString();
+            procedure = ListProcedure.USP_UPDATE_LISTING.ToString();
             Utils.UpdateEntity(listing, procedure, new string[] { "Title", "UserEmail", "Amount", "Bids", "Published" });
         }
 
         // Remove eller insert? InsertEntity används
         public static void RemoveListing(Listing listing)
         {
-            procedure = ListProcedure.REMOVE_LISTING.ToString();
+            procedure = ListProcedure.USP_REMOVE_LISTING.ToString();
             Utils.InsertEntity(listing, procedure, exceptionParams);
         }
 
         public static void RemoveListing(int id)
         {
-            procedure = ListProcedure.REMOVE_LISTING.ToString();
+            procedure = ListProcedure.USP_REMOVE_LISTING.ToString();
             parameters = new Dictionary<string, object>();
             parameters.Add("Id", id);
 
@@ -57,7 +57,7 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static List<object> GetAllListings()
         {
-            procedure = ListProcedure.GET_ALL_LISTINGS_DESC.ToString();
+            procedure = ListProcedure.USP_GET_ALL_LISTINGS_DESC.ToString();
             return Utils.Get(type, procedure, null, new string[] { "Bids" });
         }
     }

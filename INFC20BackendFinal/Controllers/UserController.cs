@@ -37,6 +37,28 @@ namespace INFC20BackendFinal.Controllers
 
         }
 
+        [HttpPost]
+        [Route("api/User/IsUserLoginOK/{password}")]
+        public bool IsUserLoginOK([FromBody]string userEmail, string password)
+        {
+            if (userEmail != null)
+            {
+                User user = UserDAL.GetUser(userEmail);
+                if (user != null)
+                {
+                    return user.Password == password;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         // PUT: api/User/5
         public void Put(int id, [FromBody]string value)
         {

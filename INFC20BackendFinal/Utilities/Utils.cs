@@ -99,7 +99,7 @@ namespace INFC20BackendFinal.Utilities
                         if (returnNewId)
                         {
 
-                            SqlParameter newId = new SqlParameter("@NewIdentity", SqlDbType.Int);
+                            SqlParameter newId = new SqlParameter("NewIdentity", SqlDbType.Int);
                             newId.Direction = ParameterDirection.Output;
                             cmd.Parameters.Add(newId);
                             cmd.ExecuteNonQuery();

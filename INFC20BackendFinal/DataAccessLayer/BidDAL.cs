@@ -16,7 +16,7 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static void AddBid(Bid bid)
         {
-            procedure = BidProcedure.ADD_BID.ToString();
+            procedure = BidProcedure.USP_ADD_BID.ToString();
             Utils.InsertEntity(bid, procedure, exceptionParams, false);
         }
 
@@ -28,7 +28,7 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static List<object> GetBidsForListing(int listingId)
         {
-            procedure = BidProcedure.GET_BIDS_FOR_LISTING.ToString();
+            procedure = BidProcedure.USP_GET_BIDS_FOR_LISTING.ToString();
 
             parameters = new Dictionary<string, object>();
             parameters.Add("ListingId", listingId);

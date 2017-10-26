@@ -16,7 +16,7 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static Tag GetTag(string tagId)
         {
-            procedure = TagProcedure.GET_TAG.ToString();
+            procedure = TagProcedure.USP_GET_TAG.ToString();
             parameters = new Dictionary<string, object>();
             parameters.Add("TagId", tagId);
 
@@ -25,7 +25,7 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static List<object> GetListingsTags(int listingId)
         {
-            procedure = TagProcedure.GET_TAGS_FOR_LISTING.ToString();
+            procedure = TagProcedure.USP_GET_TAGS_FOR_LISTING.ToString();
             parameters = new Dictionary<string, object>();
             parameters.Add("ListingId", listingId);
 
@@ -34,13 +34,13 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static void AddTag(Tag tag)
         {
-            procedure = TagProcedure.ADD_TAG.ToString();
+            procedure = TagProcedure.USP_ADD_TAG.ToString();
             Utils.InsertEntity(tag, procedure, exceptionParams);
         }
 
         public static void AddTagToListing(Listing listing, Tag tag)
         {
-            procedure = TagProcedure.ADD_TAG_TO_LISTING.ToString();
+            procedure = TagProcedure.USP_ADD_TAG_TO_LISTING.ToString();
             parameters = new Dictionary<string, object>();
 
             if (listing != null && tag != null)
@@ -54,7 +54,7 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static void AddTagToListing(int listingId, string tagId)
         {
-            procedure = TagProcedure.ADD_TAG_TO_LISTING.ToString();
+            procedure = TagProcedure.USP_ADD_TAG_TO_LISTING.ToString();
             parameters = new Dictionary<string, object>();
 
             if (listingId > 0 && tagId != null)
@@ -74,7 +74,7 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static void RemoveTagFromListing(int listingId, string tagId)
         {
-            procedure = TagProcedure.REMOVE_LISTING_TAG.ToString();
+            procedure = TagProcedure.USP_REMOVE_LISTING_TAG.ToString();
             parameters = new Dictionary<string, object>();
 
             if (tagId != null && listingId > 0)
@@ -88,13 +88,13 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static void RemoveTag(Tag tag)
         {
-            procedure = TagProcedure.REMOVE_TAG.ToString();
+            procedure = TagProcedure.USP_REMOVE_TAG.ToString();
             Utils.InsertEntity(tag, procedure, exceptionParams);
         }
 
         public static void RemoveTag(string tagId)
         {
-            procedure = TagProcedure.REMOVE_TAG.ToString();
+            procedure = TagProcedure.USP_REMOVE_TAG.ToString();
             parameters = new Dictionary<string, object>();
             parameters.Add("TagId", tagId);
 
@@ -103,7 +103,7 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static List<object> GetAllTags()
         {
-            procedure = TagProcedure.GET_ALL_TAGS.ToString();
+            procedure = TagProcedure.USP_GET_ALL_TAGS.ToString();
             return Utils.Get(type, procedure, parameters, exceptionParams);
         }
 

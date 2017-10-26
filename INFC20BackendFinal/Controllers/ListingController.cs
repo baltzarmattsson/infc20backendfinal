@@ -92,7 +92,8 @@ namespace INFC20BackendFinal.Controllers
             var postedImage = httpRequest.Files[0];
 
             string referencablePathByFrontEnd = "assets\\mock-data\\listing-images\\" + listingId + "\\";
-            string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Systemvetare\\INFC20Project\\buysellapp\\src\\" + referencablePathByFrontEnd;
+            // DESKTOP - string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Systemvetare\\INFC20Project\\buysellapp\\src\\" + referencablePathByFrontEnd;
+            string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Systemvetare\\INFC20Frontend\\src\\" + referencablePathByFrontEnd;
 
             Directory.CreateDirectory(saveDir);
             var localFilePath = saveDir + postedImage.FileName;
