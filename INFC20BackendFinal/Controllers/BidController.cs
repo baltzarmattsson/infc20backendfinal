@@ -2,6 +2,7 @@
 using INFC20BackendFinal.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -23,11 +24,19 @@ namespace INFC20BackendFinal.Controllers
 
         // POST: api/Bid
         [HttpPost]
-        public IHttpActionResult Post([FromBody]Bid bid)
+        public HttpRequestMessage Post([FromBody]Bid bid)
         {
             if (bid != null)
             {
-                BidDAL.AddBid(bid);
+                try
+                {
+                    BidDAL.AddBid(bid);
+                }
+                catch (SqlException sqle)
+                {
+
+                    return InternalServerError(ExceptionHandler.HandleSqlException(sqle));
+                }
                 return Ok(bid);
             }
             else
