@@ -1,4 +1,5 @@
 ﻿using INFC20BackendFinal.DataAccessLayer;
+using INFC20BackendFinal.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,6 @@ namespace INFC20BackendFinal.Controllers
 {
     public class UserController : ApiController
     {
-        // GET: api/User
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
         // GET: api/User/5
         [HttpPost]
@@ -26,8 +22,19 @@ namespace INFC20BackendFinal.Controllers
         }
 
         // POST: api/User
-        public void Post([FromBody]string value)
+        [HttpPost]
+        public IHttpActionResult Post([FromBody]User user) 
         {
+            if (user != null)
+            {
+                UserDAL.AddUser(user);
+                return Ok(user);
+            }   
+            else
+            {
+                return BadRequest();
+            }
+
         }
 
         // PUT: api/User/5

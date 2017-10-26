@@ -30,9 +30,28 @@ namespace INFC20BackendFinal.Controllers
 
             var bidsForListing = BidDAL.GetBidsForListing(id).Cast<Bid>();
             listing.Bids = bidsForListing.ToList();
-
             return Ok(listing);
         }
+
+        // GET: api/Listing/GetListingsByEmail
+        [HttpPost]
+        [Route("api/Listing/GetListingsByEmail")]
+        public IHttpActionResult GetListingsByEmail([FromBody]string email)
+        {
+            if (email != null)
+            {
+                // TODO - write stored proc
+                var allListings = ListingDAL.GetAllListings().Cast<Listing>();
+                var filtered = allListings.Where(listing => listing.UserEmail == email).ToList();
+                return Ok(filtered);
+            } 
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+            //ListingDAL.
 
         // POST: api/Listing
         [HttpPost]
@@ -72,13 +91,14 @@ namespace INFC20BackendFinal.Controllers
 
             var postedImage = httpRequest.Files[0];
 
-            string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\infc20images\\";
+            string referencablePathByFrontEnd = "assets\\mock-data\\listing-images\\" + listingId + "\\";
+            string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Systemvetare\\INFC20Project\\buysellapp\\src\\" + referencablePathByFrontEnd;
 
             Directory.CreateDirectory(saveDir);
             var localFilePath = saveDir + postedImage.FileName;
             postedImage.SaveAs(localFilePath);
 
-            listing.ImgUrl = localFilePath;
+            listing.ImgUrl = referencablePathByFrontEnd + postedImage.FileName;
 
             ListingDAL.UpdateListing(listing);
 
@@ -86,8 +106,17 @@ namespace INFC20BackendFinal.Controllers
         }
 
         // PUT: api/Listing/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put([FromBody]Listing listing)
         {
+            if (listing != null)
+            {
+                ListingDAL.UpdateListing(listing);
+                return Ok(listing);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         // DELETE: api/Listing/5

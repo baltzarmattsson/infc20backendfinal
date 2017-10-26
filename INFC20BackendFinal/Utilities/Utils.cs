@@ -55,13 +55,21 @@ namespace INFC20BackendFinal.Utilities
             return tuples;
         }
 
-        public static object InsertEntity(object entity, string procedure, string[] exceptionParams)
+        public static object InsertEntity(object entity, string procedure, string[] exceptionParams, bool returnNewId = true)
         {
             if (entity != null && procedure != null)
             {
                 Dictionary<string, object> parameters = Utils.GetParams(entity, exceptionParams);
-                object newId = Utils.Insert(procedure, parameters, true);
-                return newId;
+
+                if (returnNewId)
+                {
+                    object newId = Utils.Insert(procedure, parameters, true);
+                    return newId;
+                }
+                else
+                {
+                    Utils.Insert(procedure, parameters, false);
+                }
             }
             return null;
         }

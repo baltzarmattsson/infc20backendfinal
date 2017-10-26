@@ -26,7 +26,7 @@ namespace INFC20BackendFinal.DataAccessLayer
         public static void AddUser(User user)
         {
             procedure = UserProcedure.ADD_USER.ToString();
-            Utils.InsertEntity(user, procedure, exceptionParams);
+            Utils.InsertEntity(user, procedure, exceptionParams, false);
         }
 
         public static void UpdateUser(User user)

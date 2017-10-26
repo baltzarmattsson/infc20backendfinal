@@ -17,7 +17,7 @@ namespace INFC20BackendFinal.DataAccessLayer
         public static void AddBid(Bid bid)
         {
             procedure = BidProcedure.ADD_BID.ToString();
-            Utils.InsertEntity(bid, procedure, exceptionParams);
+            Utils.InsertEntity(bid, procedure, exceptionParams, false);
         }
 
         public static void AddBid(User user, Listing listing, double amount)
