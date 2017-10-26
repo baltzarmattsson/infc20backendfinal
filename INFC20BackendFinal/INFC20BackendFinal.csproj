@@ -190,6 +190,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DataAccessLayer\BidDAL.cs" />
     <Compile Include="DataAccessLayer\Connector.cs" />
+    <Compile Include="DataAccessLayer\ExceptionHandler.cs" />
     <Compile Include="DataAccessLayer\ListingDAL.cs" />
     <Compile Include="DataAccessLayer\ReviewDAL.cs" />
     <Compile Include="DataAccessLayer\TagDAL.cs" />

@@ -26,7 +26,7 @@ namespace INFC20BackendFinal.Utilities
                         if (parameters != null)
                             foreach (var entry in parameters)
                                 cmd.Parameters.AddWithValue(entry.Key, entry.Value);
-
+                        
                         using (SqlDataReader dataReader = cmd.ExecuteReader())
                         {
                             while (dataReader.Read() && dataReader.HasRows)
@@ -87,31 +87,32 @@ namespace INFC20BackendFinal.Utilities
         {
             if (procedure != null && parameters != null)
             {
-                using (SqlConnection con = Connector.Connect())
-                {
-                    using (SqlCommand cmd = new SqlCommand(procedure, con))
+                    using (SqlConnection con = Connector.Connect())
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        foreach (var entry in parameters)
-                            cmd.Parameters.AddWithValue(entry.Key, entry.Value);
-
-
-                        if (returnNewId)
+                        using (SqlCommand cmd = new SqlCommand(procedure, con))
                         {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            foreach (var entry in parameters)
+                                cmd.Parameters.AddWithValue(entry.Key, entry.Value);
 
-                            SqlParameter newId = new SqlParameter("NewIdentity", SqlDbType.Int);
-                            newId.Direction = ParameterDirection.Output;
-                            cmd.Parameters.Add(newId);
-                            cmd.ExecuteNonQuery();
-                            return newId.Value.ToString();
+
+                            if (returnNewId)
+                            {
+
+                                SqlParameter newId = new SqlParameter("NewIdentity", SqlDbType.Int);
+                                newId.Direction = ParameterDirection.Output;
+                                cmd.Parameters.Add(newId);
+                                cmd.ExecuteNonQuery();
+                                return newId.Value.ToString();
+
+                            }
+                            else
+                            {
+                                cmd.ExecuteNonQuery();
+                            }
 
                         }
-                        else
-                        {
-                            cmd.ExecuteNonQuery();
-                        }
-
-                    }
+                    
                 }
             }
 
