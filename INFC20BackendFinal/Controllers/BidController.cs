@@ -16,7 +16,7 @@ namespace INFC20BackendFinal.Controllers
         // GET: api/Bid
         [HttpGet]
         [Route("api/Bid/GetBidsForListing/{listingId}")]
-        public HttpResponseMessage GetBidsForListing(int listingId)
+        public async Task<HttpResponseMessage> GetBidsForListing(int listingId)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace INFC20BackendFinal.Controllers
 
         // POST: api/Bid
         [HttpPost]
-        public HttpResponseMessage Post([FromBody]Bid bid)
+        public async Task<HttpResponseMessage> Post([FromBody]Bid bid)
         {
             if (bid != null)
             {

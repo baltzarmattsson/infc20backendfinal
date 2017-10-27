@@ -12,15 +12,17 @@ namespace INFC20BackendFinal.Models
         public string LastName { get; set; }
         public string Address { get; set; }
         public string Password { get; set; }
+        public int NbrOfBids { get; set; }
 
         public User() { }
-        public User(string email, string firstName, string lastName, string address, string password)
+        public User(string email, string firstName, string lastName, string address, string password, int nbrOfBids)
         {
             this.Email = email;
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Address = address;
             this.Password = password;
+            this.NbrOfBids = nbrOfBids;
         }
     }
 }

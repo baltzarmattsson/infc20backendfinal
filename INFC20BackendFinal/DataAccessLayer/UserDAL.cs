@@ -26,13 +26,13 @@ namespace INFC20BackendFinal.DataAccessLayer
         public static void AddUser(User user)
         {
             procedure = UserProcedure.USP_ADD_USER.ToString();
-            Utils.InsertEntity(user, procedure, exceptionParams, false);
+            Utils.InsertEntity(user, procedure, new string[] { "NbrOfBids" }, false);
         }
 
         public static void UpdateUser(User user)
         {
             procedure = UserProcedure.USP_UPDATE_USER.ToString();
-            Utils.InsertEntity(user, procedure, exceptionParams, false);
+            Utils.InsertEntity(user, procedure, new string[] { "NbrOfBids" }, false);
         }
 
         public static void RemoveUser(User user)

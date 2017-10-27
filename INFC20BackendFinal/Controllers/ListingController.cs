@@ -17,11 +17,11 @@ namespace INFC20BackendFinal.Controllers
     {
 
         [HttpGet]
-        public HttpResponseMessage GetListings()
+        public async Task<HttpResponseMessage> GetListings()
         {
             try
             {
-                var allListings = ListingDAL.GetAllListings();
+                var allListings = ListingDAL.GetAllListings(true);
                 return Request.CreateResponse(HttpStatusCode.OK, allListings);
             }
             catch (SqlException sqle)
@@ -34,7 +34,8 @@ namespace INFC20BackendFinal.Controllers
 
         // GET: api/Listing/5
         [HttpGet]
-        public HttpResponseMessage Get(int id)
+        [Route("api/Listing/Get/{id}")]
+        public async Task<HttpResponseMessage> Get(int id)
         {
 
             try
@@ -54,14 +55,14 @@ namespace INFC20BackendFinal.Controllers
         // GET: api/Listing/GetListingsByEmail
         [HttpPost]
         [Route("api/Listing/GetListingsByEmail")]
-        public HttpResponseMessage GetListingsByEmail([FromBody]string email)
+        public async Task<HttpResponseMessage> GetListingsByEmail([FromBody]string email)
         {
             if (email != null)
             {
                 // TODO - write stored proc
                 try
                 {
-                    var allListings = ListingDAL.GetAllListings().Cast<Listing>();
+                    var allListings = ListingDAL.GetAllListings(false).Cast<Listing>();
                     var filtered = allListings.Where(listing => listing.UserEmail == email).ToList();
                     return Request.CreateResponse(HttpStatusCode.OK, filtered);
                 }
@@ -81,7 +82,7 @@ namespace INFC20BackendFinal.Controllers
 
         // POST: api/Listing
         [HttpPost]
-        public HttpResponseMessage Post([FromBody]Listing listing)
+        public async Task<HttpResponseMessage> Post([FromBody]Listing listing)
         {
             if (listing != null)
             {
@@ -107,7 +108,7 @@ namespace INFC20BackendFinal.Controllers
 
         [HttpPost]
         [Route("api/Listing/UploadImageForListingId/{listingId}")]
-        public HttpResponseMessage UploadImageForListingId(int listingId)
+        public async Task<HttpResponseMessage> UploadImageForListingId(int listingId)
         {
 
             try
@@ -151,7 +152,7 @@ namespace INFC20BackendFinal.Controllers
         }
 
         // PUT: api/Listing/5
-        public HttpResponseMessage Put([FromBody]Listing listing)
+        public async Task<HttpResponseMessage> Put([FromBody]Listing listing)
         {
             if (listing != null)
             {

@@ -55,17 +55,24 @@ namespace INFC20BackendFinal.DataAccessLayer
             Utils.Insert(procedure, parameters);
         }
 
-        public static List<object> GetAllListings()
+        public static List<object> GetAllListings(bool filter)
         {
             procedure = ListProcedure.USP_GET_ALL_LISTINGS_DESC.ToString();
             var listings = new List<object>();
-            var tmp = Utils.Get(type, procedure, parameters, null);
-            foreach (Listing a in tmp)
+            var tmp = Utils.Get(type, procedure, null, null);
+
+            if (filter)
             {
-                if (a.EndTime > DateTime.Now)
-                    listings.Add(a);
+                foreach (Listing a in tmp)
+                {
+                    if (a.EndTime > DateTime.Now)
+                        listings.Add(a);
+                }
+                return listings;
+            } else
+            {
+                return tmp;
             }
-            return listings;
         }
     }
 }

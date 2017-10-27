@@ -20,8 +20,8 @@ namespace INFC20BackendFinal.DataAccessLayer
             string[] split = sqle.Message.Split('-');
             if (split.Length > 0)
             {
-                //try
-                //{
+                try
+                {
                     int sqlNbr = Convert.ToInt32(split[0].Trim());
 
                     switch (sqlNbr)
@@ -59,7 +59,10 @@ namespace INFC20BackendFinal.DataAccessLayer
                         default:
                             throw sqle;
                     }
-                //} catch (FormatException) { }
+                }
+                catch (FormatException) {
+                    return sqle.Message;
+                }
             }
             return message;
         }
