@@ -106,10 +106,5 @@ namespace INFC20BackendFinal.Controllers
             }
 
         }
-
-        // DELETE: api/User/5
-        public void Delete(int id)
-        {
-        }
     }
 }

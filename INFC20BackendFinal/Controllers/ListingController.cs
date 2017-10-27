@@ -59,7 +59,6 @@ namespace INFC20BackendFinal.Controllers
         {
             if (email != null)
             {
-                // TODO - write stored proc
                 try
                 {
                     var allListings = ListingDAL.GetAllListings(false).Cast<Listing>();
@@ -77,9 +76,7 @@ namespace INFC20BackendFinal.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
             }
         }
-
-        //ListingDAL.
-
+        
         // POST: api/Listing
         [HttpPost]
         public async Task<HttpResponseMessage> Post([FromBody]Listing listing)
@@ -174,9 +171,5 @@ namespace INFC20BackendFinal.Controllers
             }
         }
 
-        // DELETE: api/Listing/5
-        public void Delete(int id)
-        {
-        }
     }
 }

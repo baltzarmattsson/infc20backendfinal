@@ -16,7 +16,6 @@ namespace INFC20BackendFinal.DataAccessLayer
 
         public static Listing GetListing(int id)
         {
-            //exceptionParams = new string[] { "Bids" };
             procedure = ListProcedure.USP_GET_LISTING.ToString();
             parameters = new Dictionary<string, object>();
             parameters.Add("Id", id);
@@ -24,7 +23,7 @@ namespace INFC20BackendFinal.DataAccessLayer
             return Utils.Get(type, procedure, parameters, new string[] { "Bids" }).FirstOrDefault() as Listing;
         }
 
-        public static int AddListing(Listing listing) // what if listing is null? 
+        public static int AddListing(Listing listing)
         {
 
             procedure = ListProcedure.USP_ADD_LISTING.ToString();
@@ -38,8 +37,7 @@ namespace INFC20BackendFinal.DataAccessLayer
             procedure = ListProcedure.USP_UPDATE_LISTING.ToString();
             Utils.UpdateEntity(listing, procedure, new string[] { "Title", "UserEmail", "Amount", "Bids", "Published" });
         }
-
-        // Remove eller insert? InsertEntity används
+        
         public static void RemoveListing(Listing listing)
         {
             procedure = ListProcedure.USP_REMOVE_LISTING.ToString();

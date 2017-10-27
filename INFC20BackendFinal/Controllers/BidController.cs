@@ -60,12 +60,6 @@ namespace INFC20BackendFinal.Controllers
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
             }
-        }
-
-        // DELETE: api/Bid/5
-        public void Delete(int id)
-        {
-        }
-        
+        }        
     }
 }

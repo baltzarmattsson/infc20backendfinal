@@ -22,12 +22,6 @@ namespace INFC20BackendFinal.DataAccessLayer
             Utils.InsertEntity(bid, procedure, exceptionParams, false);
         }
 
-        //public static void AddBid(User user, Listing listing, double amount)
-        //{
-        //    if (user != null && listing != null)
-        //        AddBid(new Bid(user.Email, listing.Id, amount));
-        //}
-
         public static List<object> GetBidsForListing(int listingId)
         {
             procedure = BidProcedure.USP_GET_BIDS_FOR_LISTING.ToString();
@@ -62,7 +56,6 @@ namespace INFC20BackendFinal.DataAccessLayer
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("ListingId", listingId);
-                    //cmd.ExecuteReader();
 
                     using (SqlDataReader dataReader = cmd.ExecuteReader())
                     {
@@ -74,14 +67,7 @@ namespace INFC20BackendFinal.DataAccessLayer
                     }
                 }
             }
-
             return 0.0;
-
-
-            //parameters = new Dictionary<string, object>();
-            //parameters.Add("ListingId", listingId);
-            //Bid a = Utils.Get(type, procedure, parameters, null).FirstOrDefault() as Bid;
-            //return Convert.ToDouble(a.Amount);
         }
 
     }

@@ -7,8 +7,8 @@ namespace INFC20BackendFinal.Models
 {
     public class Listing
     {
-        public int Id { get; set; } // auto incremental
-        public DateTime? Published { get; set; } //auto incremental, set nullable
+        public int Id { get; set; } 
+        public DateTime? Published { get; set; }
 
         public DateTime EndTime { get; set; }
         public string Title { get; set; }

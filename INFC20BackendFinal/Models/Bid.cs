@@ -11,7 +11,7 @@ namespace INFC20BackendFinal.Models
         public int ListingId { get; set; }
         public double Amount { get; set; }
 
-        public DateTime? TimeStamp { get; set; } // auto incremental, set nullable
+        public DateTime? TimeStamp { get; set; }
 
         public Bid() { }
 

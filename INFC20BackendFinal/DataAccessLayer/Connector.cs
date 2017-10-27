@@ -26,22 +26,16 @@ namespace INFC20BackendFinal.DataAccessLayer
             {
                 SqlConnection con = new SqlConnection(url);
                 con.Open();
-                //Console.WriteLine("Connection opened");
                 return con;
             }
             catch (SqlException se)
             {
-                //Console.WriteLine(se.Message);
                 throw se;
-                Environment.Exit(0);
             }
             catch (Exception e)
             {
-                //Console.WriteLine(e.Message);
                 throw e;
-                Environment.Exit(0);
             }
-            return null;
         }
     }
 }
