@@ -39,8 +39,15 @@ namespace INFC20BackendFinal.Controllers
             {
                 try
                 {
-                    BidDAL.AddBid(bid);
-                    return Request.CreateResponse(HttpStatusCode.OK, bid);
+                    if (BidDAL.IsBidOK(bid))
+                    {
+                        BidDAL.AddBid(bid);
+                        return Request.CreateResponse(HttpStatusCode.OK, bid);
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Bid too low, plez try again");
+                    }
                 }
                 catch (SqlException sqle)
                 {
@@ -59,5 +66,6 @@ namespace INFC20BackendFinal.Controllers
         public void Delete(int id)
         {
         }
+        
     }
 }

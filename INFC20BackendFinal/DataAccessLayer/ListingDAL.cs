@@ -58,7 +58,14 @@ namespace INFC20BackendFinal.DataAccessLayer
         public static List<object> GetAllListings()
         {
             procedure = ListProcedure.USP_GET_ALL_LISTINGS_DESC.ToString();
-            return Utils.Get(type, procedure, null, new string[] { "Bids" });
+            var listings = new List<object>();
+            var tmp = Utils.Get(type, procedure, parameters, null);
+            foreach (Listing a in tmp)
+            {
+                if (a.EndTime > DateTime.Now)
+                    listings.Add(a);
+            }
+            return listings;
         }
     }
 }

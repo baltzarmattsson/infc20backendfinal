@@ -2,6 +2,8 @@
 using INFC20BackendFinal.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -20,11 +22,11 @@ namespace INFC20BackendFinal.DataAccessLayer
             Utils.InsertEntity(bid, procedure, exceptionParams, false);
         }
 
-        public static void AddBid(User user, Listing listing, double amount)
-        {
-            if (user != null && listing != null)
-                AddBid(new Bid(user.Email, listing.Id, amount));
-        }
+        //public static void AddBid(User user, Listing listing, double amount)
+        //{
+        //    if (user != null && listing != null)
+        //        AddBid(new Bid(user.Email, listing.Id, amount));
+        //}
 
         public static List<object> GetBidsForListing(int listingId)
         {
@@ -35,5 +37,52 @@ namespace INFC20BackendFinal.DataAccessLayer
 
             return Utils.Get(type, procedure, parameters, exceptionParams);
         }
+
+        public static bool IsBidOK(Bid bid)
+        {
+            if (bid != null)
+            {
+                Listing listing = ListingDAL.GetListing(bid.ListingId);
+                if (DateTime.Now <= listing.EndTime)
+                {
+                    double highestBid = GetHighestBidForListing(bid.ListingId);
+                    if (bid.Amount > highestBid)
+                        return true;
+                }
+            }
+            return false;
+        }
+        private static double GetHighestBidForListing(int listingId)
+        {
+            procedure = BidProcedure.USP_GET_HIGHEST_BID_FOR_LISTING.ToString();
+            
+            using (SqlConnection con = Connector.Connect())
+            {
+                using (SqlCommand cmd = new SqlCommand(procedure, con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("ListingId", listingId);
+                    //cmd.ExecuteReader();
+
+                    using (SqlDataReader dataReader = cmd.ExecuteReader())
+                    {
+                        while (dataReader.Read() && dataReader.HasRows)
+                        {
+                            double highestBid = Convert.ToDouble(dataReader["Amount"]);
+                            return highestBid;
+                        }
+                    }
+                }
+            }
+
+            return 0.0;
+
+
+            //parameters = new Dictionary<string, object>();
+            //parameters.Add("ListingId", listingId);
+            //Bid a = Utils.Get(type, procedure, parameters, null).FirstOrDefault() as Bid;
+            //return Convert.ToDouble(a.Amount);
+        }
+
     }
 }
