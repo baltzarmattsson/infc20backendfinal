@@ -39,7 +39,7 @@ namespace INFC20BackendFinal.Controllers
                 try
                 {
                     UserDAL.AddUser(user);
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    return Request.CreateResponse(HttpStatusCode.OK, user);
                 }
                 catch (SqlException sqle)
                 {

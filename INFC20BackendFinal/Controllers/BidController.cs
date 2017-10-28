@@ -46,7 +46,7 @@ namespace INFC20BackendFinal.Controllers
                     }
                     else
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Bid too low, plez try again");
+                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Bid too low, please try again");
                     }
                 }
                 catch (SqlException sqle)
